@@ -1,0 +1,6 @@
+{
+  "name": "register-login-demo-angular",
+  "dependencies": {
+    "bootstrap": "^3.3.4"
+  }
+}
