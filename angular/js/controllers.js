@@ -1,6 +1,8 @@
 var app = angular.module('registerLoginDemo', []);
 
 app.controller('MainController', function($scope, $http) {
+	$scope.posts = [];
+
 	$scope.signup = function(username, password) {
 		console.log('username', username, 'password', password);
 
@@ -27,8 +29,16 @@ app.controller('MainController', function($scope, $http) {
 		};
 
 		$http.post('/api/sessions', user)
-			.success(function() {
-				console.log('everything went well');
+			.success(function(token) {
+				console.log('everything went well, token: ', token);
+
+				$http.defaults.headers.common['x-auth'] = token;
+
+				$http.get('/api/posts')
+					.success(function(posts) {
+						$scope.posts = posts;
+				});
+
 			})
 			.error(function() {
 				console.log('things went badly');

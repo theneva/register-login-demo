@@ -79,6 +79,17 @@ app.post('/api/sessions', function(req, res) {
 	});
 });
 
+app.get('/api/posts', function(req, res) {
+	var token = req.header('x-auth');
+
+	var user = jwt.decode(token, secrets.jwt);
+
+	res.json([
+		{body: 'Hello world!', author: 'theneva'},
+		{body: 'What is happening to this thing', author: 'dickeyxxx'}
+	]);
+});
+
 app.listen(port, function() {
 	console.log('app listening on port: ' + port);
 });
