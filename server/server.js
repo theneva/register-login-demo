@@ -3,6 +3,11 @@ var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
+var jwt = require('jwt-simple');
+
+var secrets = {
+	jwt: 'some great secret!"#78989'
+};
 
 var app = express();
 var port = 5238;
@@ -65,8 +70,9 @@ app.post('/api/sessions', function(req, res) {
 		var passwordsMatch = bcrypt.compareSync(loginAttempt.password, user.passwordHash);
 
 		if (passwordsMatch) {
-			// user was logged in
-			return res.status(200).send('ok');
+			// user can be logged in
+			var token = jwt.encode({username: user.username}, secrets.jwt);
+			return res.status(200).send(token);
 		} else {
 			return res.status(401).send('Wrong password');
 		}
